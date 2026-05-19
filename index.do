@@ -43,6 +43,52 @@ export class Assert {
         }
     }
 
+    static contains<T>(values: readonly T[], expected: T, message: string | null = null): void {
+        if values.contains(expected) {
+            return
+        }
+        if message == null {
+            assert(false, "expected array to contain value")
+        } else {
+            assert(false, (message ?? "") + ": expected array to contain value")
+        }
+    }
+
+    static notContains<T>(values: readonly T[], expected: T, message: string | null = null): void {
+        if !values.contains(expected) {
+            return
+        }
+        if message == null {
+            assert(false, "expected array not to contain value")
+        } else {
+            assert(false, (message ?? "") + ": expected array not to contain value")
+        }
+    }
+
+    static stringContains(value: string, expected: string, message: string | null = null): void {
+        if value.contains(expected) {
+            return
+        }
+        expectation := "expected string to contain \"" + expected + "\""
+        if message == null {
+            assert(false, expectation)
+        } else {
+            assert(false, (message ?? "") + ": " + expectation)
+        }
+    }
+
+    static stringNotContains(value: string, expected: string, message: string | null = null): void {
+        if !value.contains(expected) {
+            return
+        }
+        expectation := "expected string not to contain \"" + expected + "\""
+        if message == null {
+            assert(false, expectation)
+        } else {
+            assert(false, (message ?? "") + ": " + expectation)
+        }
+    }
+
     static fail(message: string | null = null): void {
         if message == null {
             assert(false, "test failed")

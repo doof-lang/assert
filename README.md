@@ -10,6 +10,7 @@ import { Assert } from "std/assert"
 export function testAddition(): void {
   Assert.equal(1 + 1, 2)
   Assert.isTrue(3 > 1, "expected 3 to be greater than 1")
+  Assert.contains([1, 2, 3], 2)
 }
 ```
 
@@ -58,6 +59,46 @@ Fails if `value` is `true`.
 
 ```doof
 Assert.isFalse(stream.done, "stream should still be open")
+```
+
+---
+
+#### `Assert.contains<T>(values: readonly T[], expected: T, message?: string | null): void`
+
+Fails if `values` does not contain `expected`.
+
+```doof
+Assert.contains(ids, "acct-1")
+```
+
+---
+
+#### `Assert.notContains<T>(values: readonly T[], expected: T, message?: string | null): void`
+
+Fails if `values` contains `expected`.
+
+```doof
+Assert.notContains(ids, "disabled")
+```
+
+---
+
+#### `Assert.stringContains(value: string, expected: string, message?: string | null): void`
+
+Fails if `value` does not contain `expected`.
+
+```doof
+Assert.stringContains(error.message, "timeout")
+```
+
+---
+
+#### `Assert.stringNotContains(value: string, expected: string, message?: string | null): void`
+
+Fails if `value` contains `expected`.
+
+```doof
+Assert.stringNotContains(output, "secret")
 ```
 
 ---
