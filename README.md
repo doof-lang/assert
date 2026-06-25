@@ -2,6 +2,11 @@
 
 Test assertion utilities for the Doof test runner. Provides a single `Assert` class with static methods that call `assert()` on failure and optionally include a descriptive message.
 
+## Documentation
+
+- [Guide and API reference](docs/API.md) explains failure messages, assertion categories, and the complete `Assert` API.
+- Tests can be run with `doof test assert`.
+
 ## Usage
 
 ```doof
