@@ -23,11 +23,15 @@ export function testAddition(): void {
 
 ### `Assert`
 
-A class with static assertion methods. All methods accept an optional trailing `message` parameter that is prepended to the failure message.
+A class with static assertion methods. All methods accept an optional trailing
+`message` parameter that is prepended to the failure message and a
+`source: SourceLocation = @caller` parameter. The source is captured
+automatically, so failures identify the module and line where the assertion was
+called.
 
 ---
 
-#### `Assert.equal<T>(actual: T, expected: T, message?: string | null): void`
+#### `Assert.equal<T>(actual: T, expected: T, message?: string | null, source?: SourceLocation): void`
 
 Fails if `actual` and `expected` are not equal.
 
@@ -38,7 +42,7 @@ Assert.equal(name, "Alice", "display name")
 
 ---
 
-#### `Assert.notEqual<T>(actual: T, expected: T, message?: string | null): void`
+#### `Assert.notEqual<T>(actual: T, expected: T, message?: string | null, source?: SourceLocation): void`
 
 Fails if `actual` and `expected` are equal.
 
@@ -48,7 +52,28 @@ Assert.notEqual(a, b, "values should differ")
 
 ---
 
-#### `Assert.isTrue(value: bool, message?: string | null): void`
+#### `Assert.arrayEqual<T>(actual: readonly T[], expected: readonly T[], message?: string | null, source?: SourceLocation): void`
+
+Fails if the arrays differ in length or at any element.
+
+```doof
+Assert.arrayEqual(actualBytes, expectedBytes)
+```
+
+---
+
+#### `Assert.approxEqual(actual: double, expected: double, tolerance?: double, message?: string | null, source?: SourceLocation): void`
+
+Fails if the values differ by more than `tolerance`, which defaults to
+`0.000001`.
+
+```doof
+Assert.approxEqual(actual, expected, 0.0001)
+```
+
+---
+
+#### `Assert.isTrue(value: bool, message?: string | null, source?: SourceLocation): void`
 
 Fails if `value` is `false`.
 
@@ -58,7 +83,7 @@ Assert.isTrue(list.length > 0)
 
 ---
 
-#### `Assert.isFalse(value: bool, message?: string | null): void`
+#### `Assert.isFalse(value: bool, message?: string | null, source?: SourceLocation): void`
 
 Fails if `value` is `true`.
 
@@ -68,7 +93,7 @@ Assert.isFalse(stream.done, "stream should still be open")
 
 ---
 
-#### `Assert.contains<T>(values: readonly T[], expected: T, message?: string | null): void`
+#### `Assert.contains<T>(values: readonly T[], expected: T, message?: string | null, source?: SourceLocation): void`
 
 Fails if `values` does not contain `expected`.
 
@@ -78,7 +103,7 @@ Assert.contains(ids, "acct-1")
 
 ---
 
-#### `Assert.notContains<T>(values: readonly T[], expected: T, message?: string | null): void`
+#### `Assert.notContains<T>(values: readonly T[], expected: T, message?: string | null, source?: SourceLocation): void`
 
 Fails if `values` contains `expected`.
 
@@ -88,7 +113,7 @@ Assert.notContains(ids, "disabled")
 
 ---
 
-#### `Assert.stringContains(value: string, expected: string, message?: string | null): void`
+#### `Assert.stringContains(value: string, expected: string, message?: string | null, source?: SourceLocation): void`
 
 Fails if `value` does not contain `expected`.
 
@@ -98,7 +123,7 @@ Assert.stringContains(error.message, "timeout")
 
 ---
 
-#### `Assert.stringNotContains(value: string, expected: string, message?: string | null): void`
+#### `Assert.stringNotContains(value: string, expected: string, message?: string | null, source?: SourceLocation): void`
 
 Fails if `value` contains `expected`.
 
@@ -108,7 +133,7 @@ Assert.stringNotContains(output, "secret")
 
 ---
 
-#### `Assert.fail(message?: string | null): void`
+#### `Assert.fail(message?: string | null, source?: SourceLocation): void`
 
 Unconditionally fails the test.
 
