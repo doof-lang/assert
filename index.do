@@ -46,6 +46,107 @@ export class Assert {
         }
     }
 
+    static mutableArrayEqual<T>(
+        actual: T[],
+        expected: readonly T[],
+        message: string | none = none,
+        source: SourceLocation = @caller,
+    ) {
+        Assert.check(actual.length == expected.length, "expected arrays to have equal length", message, source)
+
+        for index of 0..<actual.length {
+            if actual[index] == expected[index] {
+                continue
+            }
+            Assert.check(
+                false,
+                "expected arrays to be equal at index " + string(index),
+                message,
+                source,
+            )
+        }
+    }
+
+    static setEqual<T>(
+        actual: ReadonlySet<T>,
+        expected: ReadonlySet<T>,
+        message: string | none = none,
+        source: SourceLocation = @caller,
+    ) {
+        Assert.check(actual.size == expected.size, "expected sets to have equal size", message, source)
+
+        for value of actual {
+            Assert.check(expected.has(value), "expected sets to contain equal values", message, source)
+        }
+    }
+
+    static mutableSetEqual<T>(
+        actual: Set<T>,
+        expected: ReadonlySet<T>,
+        message: string | none = none,
+        source: SourceLocation = @caller,
+    ) {
+        Assert.check(actual.size == expected.size, "expected sets to have equal size", message, source)
+
+        for value of actual {
+            Assert.check(expected.has(value), "expected sets to contain equal values", message, source)
+        }
+    }
+
+    static mapEqual<K, V>(
+        actual: ReadonlyMap<K, V>,
+        expected: ReadonlyMap<K, V>,
+        message: string | none = none,
+        source: SourceLocation = @caller,
+    ) {
+        Assert.check(actual.size == expected.size, "expected maps to have equal size", message, source)
+
+        for key, value of actual {
+            expectedValue := expected.get(key)
+            case expectedValue {
+                success: Success -> Assert.check(
+                    value == success.value,
+                    "expected maps to contain equal entries",
+                    message,
+                    source,
+                ),
+                _: Failure -> Assert.check(
+                    false,
+                    "expected maps to contain equal keys",
+                    message,
+                    source,
+                ),
+            }
+        }
+    }
+
+    static mutableMapEqual<K, V>(
+        actual: Map<K, V>,
+        expected: ReadonlyMap<K, V>,
+        message: string | none = none,
+        source: SourceLocation = @caller,
+    ) {
+        Assert.check(actual.size == expected.size, "expected maps to have equal size", message, source)
+
+        for key, value of actual {
+            expectedValue := expected.get(key)
+            case expectedValue {
+                success: Success -> Assert.check(
+                    value == success.value,
+                    "expected maps to contain equal entries",
+                    message,
+                    source,
+                ),
+                _: Failure -> Assert.check(
+                    false,
+                    "expected maps to contain equal keys",
+                    message,
+                    source,
+                ),
+            }
+        }
+    }
+
     static approxEqual(
         actual: double,
         expected: double,
@@ -97,6 +198,24 @@ export class Assert {
 
     static notContains<T>(
         values: readonly T[],
+        expected: T,
+        message: string | none = none,
+        source: SourceLocation = @caller,
+    ) {
+        Assert.check(!values.contains(expected), "expected array not to contain value", message, source)
+    }
+
+    static mutableArrayContains<T>(
+        values: T[],
+        expected: T,
+        message: string | none = none,
+        source: SourceLocation = @caller,
+    ) {
+        Assert.check(values.contains(expected), "expected array to contain value", message, source)
+    }
+
+    static mutableArrayNotContains<T>(
+        values: T[],
         expected: T,
         message: string | none = none,
         source: SourceLocation = @caller,
