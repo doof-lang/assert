@@ -11,9 +11,8 @@ export class Assert {
             return
         }
 
-        failure := if message == none then expectation else
-            (message ?? "") + ": " + expectation
-        assert(false, failure + " at " + source.fileName + ":" + string(source.line))
+        failure := if text := message then "${text}: ${expectation}" else expectation
+        assert(false, "${failure} at ${source.fileName}:${source.line}")
     }
 
     static equal<T>(
@@ -39,7 +38,7 @@ export class Assert {
             }
             Assert.check(
                 false,
-                "expected arrays to be equal at index " + string(index),
+                "expected arrays to be equal at index ${index}",
                 message,
                 source,
             )
@@ -60,7 +59,7 @@ export class Assert {
             }
             Assert.check(
                 false,
-                "expected arrays to be equal at index " + string(index),
+                "expected arrays to be equal at index ${index}",
                 message,
                 source,
             )
@@ -229,7 +228,7 @@ export class Assert {
         message: string | none = none,
         source: SourceLocation = @caller,
     ) {
-        expectation := "expected string to contain \"" + expected + "\""
+        expectation := "expected string to contain \"${expected}\""
         Assert.check(value.contains(expected), expectation, message, source)
     }
 
@@ -239,7 +238,7 @@ export class Assert {
         message: string | none = none,
         source: SourceLocation = @caller,
     ) {
-        expectation := "expected string not to contain \"" + expected + "\""
+        expectation := "expected string not to contain \"${expected}\""
         Assert.check(!value.contains(expected), expectation, message, source)
     }
 
@@ -247,10 +246,6 @@ export class Assert {
         message: string | none = none,
         source: SourceLocation = @caller,
     ) {
-        if message == none {
-            Assert.check(false, "test failed", none, source)
-        } else {
-            Assert.check(false, message ?? "test failed", none, source)
-        }
+        Assert.check(false, message ?? "test failed", none, source)
     }
 }
